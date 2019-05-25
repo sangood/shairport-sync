@@ -1520,7 +1520,8 @@ int stuff_buffer_soxr_32(int32_t *inptr, int32_t *scratchBuffer, int length,
     debug(3, "soxr_oneshot execution time in microseconds: mean, standard deviation and max "
              "for %" PRId32 " interpolations in the last "
              "1250 packets. %10.1f, %10.1f, %10.1f.",
-          stat_n, stat_mean, stat_n <= 1 ? 0.0 : sqrtf(stat_M2 / (stat_n - 1)), longest_soxr_execution_time_us);
+          stat_n, stat_mean, stat_n <= 1 ? 0.0 : sqrtf(stat_M2 / (stat_n - 1)),
+          longest_soxr_execution_time_us);
     stat_n = 0;
     stat_mean = 0.0;
     stat_M2 = 0.0;
@@ -1794,7 +1795,6 @@ void *player_thread_func(void *arg) {
   if ((config.output->parameters == NULL) || (conn->input_bit_depth > output_bit_depth) ||
       (config.playback_mode == ST_mono))
     conn->enable_dither = 1;
-  
 
   // remember, the output device may never have been initialised prior to this call
   config.output->start(config.output_rate, config.output_format); // will need a corresponding stop
@@ -2379,15 +2379,17 @@ void *player_thread_func(void *arg) {
               if ((current_delay < conn->dac_buffer_queue_minimum_length) ||
                   (config.packet_stuffing == ST_basic) ||
                   (config.soxr_delay_index == 0) || // not computed yet
-                  ((config.packet_stuffing == ST_auto) && (config.soxr_delay_index > config.soxr_delay_threshold)) // if the CPU is deemed too slow
+                  ((config.packet_stuffing == ST_auto) &&
+                   (config.soxr_delay_index >
+                    config.soxr_delay_threshold)) // if the CPU is deemed too slow
                   ) {
 #endif
                 play_samples =
                     stuff_buffer_basic_32((int32_t *)conn->tbuf, inbuflength, config.output_format,
                                           conn->outbuf, amount_to_stuff, conn->enable_dither, conn);
 #ifdef CONFIG_SOXR
-              }
-              else { // soxr requested or auto requested with the index less or equal to the threshold
+              } else { // soxr requested or auto requested with the index less or equal to the
+                       // threshold
                 play_samples = stuff_buffer_soxr_32((int32_t *)conn->tbuf, (int32_t *)conn->sbuf,
                                                     inbuflength, config.output_format, conn->outbuf,
                                                     amount_to_stuff, conn->enable_dither, conn);
@@ -2936,8 +2938,8 @@ int player_play(rtsp_conn_info *conn) {
   command_start();
   // call on the output device to prepare itself
   if ((config.output) && (config.output->prepare))
-  	config.output->prepare();
-  
+    config.output->prepare();
+
   pthread_t *pt = malloc(sizeof(pthread_t));
   if (pt == NULL)
     die("Couldn't allocate space for pthread_t");
