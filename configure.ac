@@ -19,7 +19,7 @@ with_os=`echo ${with_os} | tr '[[:upper:]]' '[[:lower:]]' `
 
 # Checks for programs.
 AC_PROG_CC
-AC_PROG_CXX
+# AC_PROG_CXX
 AC_PROG_INSTALL
 
 PKG_PROG_PKG_CONFIG([0.9.0])
