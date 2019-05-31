@@ -23,9 +23,6 @@ else
 endif
 endif
 
-if USE_APPLE_ALAC
-  shairport_sync_SOURCES += apple_alac.cpp
-endif
 
 if USE_CUSTOMPIDDIR
 AM_CFLAGS+= \
@@ -80,10 +77,6 @@ if USE_PA
 shairport_sync_SOURCES += audio_pa.c
 endif
 
-if USE_CONVOLUTION
-shairport_sync_SOURCES += FFTConvolver/AudioFFT.cpp FFTConvolver/FFTConvolver.cpp FFTConvolver/Utilities.cpp FFTConvolver/convolver.cpp
-AM_CXXFLAGS += -std=c++11
-endif
 
 if USE_DNS_SD
 shairport_sync_SOURCES += mdns_dns_sd.c
